@@ -1,0 +1,16 @@
+body{font-family:"DejaVu Sans",Arial,sans-serif;font-size:11.5pt;line-height:1.45;color:#1b1a24;margin:0}
+h1{font-size:19pt;color:#A3471B;border-bottom:3px solid #E8772E;padding-bottom:4px;margin-top:0;page-break-before:always}
+h1:first-of-type{page-break-before:avoid}
+h2{font-size:14.5pt;color:#1E4F9A;margin-top:18px}
+h3{font-size:12.5pt;color:#3A1F7A;margin-top:14px}
+table{border-collapse:collapse;width:100%;font-size:9.5pt;margin:8px 0;page-break-inside:auto}
+tr{page-break-inside:avoid}
+th{background:#1A0F3D;color:#FFD43B;text-align:left;padding:4px}
+td{border:1px solid #C6C5D6;padding:4px;vertical-align:top}
+tr:nth-child(even) td{background:#F5F4FA}
+code{background:#EEE;padding:0 3px;font-size:9.5pt}
+pre{background:#F5F4FA;padding:8px;font-size:8.5pt;white-space:pre-wrap}
+blockquote{border-left:4px solid #FFD43B;margin:8px 0;padding:4px 10px;background:#FFF8DC}
+hr{border:none;border-top:1px dashed #7C7B91}
+.portada{text-align:center;padding-top:120px}
+.portada h1{border:none;font-size:26pt;page-break-before:avoid}

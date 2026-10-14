@@ -1,0 +1,515 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Ejemplo visual · Vacaciones gratis</title>
+<style>
+:root{
+  --bg:#f4f2fb; --fg:#1b1730; --mut:#55507a; --card:#ffffff; --line:#c9c3e6;
+  --btn:#4b2a94; --btnfg:#ffffff; --focus:#0a58d6; --marco:#1a0f3d;
+}
+@media (prefers-color-scheme: dark){
+  :root{
+    --bg:#14101f; --fg:#efecfa; --mut:#b0aacb; --card:#1f1a30; --line:#40376a;
+    --btn:#ffd43b; --btnfg:#1b1730; --focus:#8ab4ff; --marco:#000000;
+  }
+}
+*{box-sizing:border-box}
+html{-webkit-text-size-adjust:100%}
+body{margin:0;background:var(--bg);color:var(--fg);font:16px/1.5 system-ui,-apple-system,"Segoe UI",Roboto,Arial,sans-serif}
+main{max-width:1280px;margin:0 auto;padding:16px}
+h1{font-size:1.4rem;margin:0 0 12px}
+.marco{background:var(--marco);border:2px solid var(--line);line-height:0}
+canvas{display:block;width:100%;height:auto;aspect-ratio:16/9;background:#1a0f3d;
+  image-rendering:crisp-edges;image-rendering:pixelated;touch-action:manipulation;-webkit-tap-highlight-color:transparent}
+.controles{display:flex;flex-wrap:wrap;gap:8px;align-items:center;margin:12px 0}
+button{min-height:44px;min-width:44px;padding:0 16px;font:inherit;font-weight:600;color:var(--btnfg);
+  background:var(--btn);border:2px solid var(--btn);border-radius:8px;cursor:pointer;touch-action:manipulation}
+button.sec{background:var(--card);color:var(--fg);border-color:var(--line)}
+:focus-visible{outline:3px solid var(--focus);outline-offset:2px}
+.barra{display:flex;flex-wrap:wrap;gap:8px 12px;align-items:center;margin:8px 0}
+.barra label{font-weight:600}
+.barra input[type=range]{flex:1 1 220px;min-width:0;min-height:44px;accent-color:var(--btn)}
+#tiempo{font-variant-numeric:tabular-nums;min-width:5.5em}
+.nota{background:var(--card);border:1px solid var(--line);border-radius:8px;padding:10px 14px;color:var(--mut)}
+ol{padding-left:1.4em}
+li{margin:4px 0}
+li b{font-variant-numeric:tabular-nums}
+#vista{margin:12px 0;padding:12px;background:var(--card);border:1px solid var(--line);border-radius:8px}
+#vista[hidden]{display:none}
+#vista img{display:block;max-width:100%;height:auto;image-rendering:pixelated;margin:8px 0}
+</style>
+</head>
+<body>
+<main>
+<h1>Ejemplo visual · Vacaciones gratis</h1>
+
+<div class="marco">
+<canvas id="lienzo" width="320" height="180" tabindex="0" role="img"
+  aria-label="Escena animada: Cami gana un premio que dice vacaciones gratis, pero la letra chica dice otra cosa."></canvas>
+</div>
+
+<div class="controles">
+  <button id="bPlay" type="button">Pausa</button>
+  <button id="bReiniciar" type="button" class="sec">Reiniciar</button>
+  <button id="bVel" type="button" class="sec" aria-label="Velocidad">Velocidad 1×</button>
+  <button id="bPng" type="button" class="sec">Guardar PNG</button>
+</div>
+<div class="barra">
+  <label for="barra">Barra de tiempo</label>
+  <input id="barra" type="range" min="0" max="13" step="0.05" value="0">
+  <span id="tiempo">0,0 s</span>
+</div>
+<div id="vista" hidden>
+  <p id="vistaTexto">Mantené apretada la imagen para guardarla.</p>
+  <img id="vistaImg" alt="Cuadro de la escena exportado a 1280 por 720">
+  <button id="bCerrar" type="button" class="sec">Cerrar</button>
+</div>
+
+<p class="nota">Personajes provisorios del mockup: los finales los dibujás vos.</p>
+
+<h2>Los 9 pasos (para comentar)</h2>
+<ol>
+  <li><b>0,0–1,0 s</b> · Estudio. Cami y el dragón en el atril, Fran 2.0 en el monitor, «¡GANASTE!» parpadeando.</li>
+  <li><b>1,0–2,5 s</b> · Baja el afiche con rebote: «VACACIONES GRATIS» y una letra chica que es una línea de puntitos.</li>
+  <li><b>2,5–5,0 s</b> · Festejo: confeti, Cami salta dos veces, el dragón tira una llamita, cartel «APLAUSOS».</li>
+  <li><b>5,0–6,0 s</b> · Beat: se corta el confeti, todo quieto, aparece un «?» sobre Cami.</li>
+  <li><b>6,0–7,5 s</b> · Entra la lupa desde la derecha (con anticipación) y se posa sobre la letra chica.</li>
+  <li><b>7,5–9,5 s</b> · La lupa recorre la letra chica de izquierda a derecha y se lee la frase.</li>
+  <li><b>9,5–11,5 s</b> · Remate: caja de diálogo con la letra chica completa; al dragón se le apaga la llama.</li>
+  <li><b>11,5–12,5 s</b> · Cami mira a cámara: acercamiento seco ×2 y hold, sin texto.</li>
+  <li><b>12,5 s en adelante</b> · Plano general, globo «¡FELICITACIONES!» en el monitor y «TOCÁ PARA SEGUIR» parpadeando. Tocá el canvas, Enter o Espacio para reiniciar.</li>
+</ol>
+</main>
+
+<script>
+'use strict';
+var W = 320, H = 180, TMAX = 13;
+
+/* ---------- paleta y sprites (portados de mockup/sprites.py) ---------- */
+var PAL = {o:'#2B1B2E',s:'#F3CFA9',S:'#D19A6A',y:'#F2D27A',Y:'#C99A4A',b:'#2A2230',B:'#4A4058',
+h:'#6B4226',H:'#9A6438',i:'#4E9A5A',k:'#1B1620',p:'#E08A8A',r:'#C0404A',n:'#1E2A4A',j:'#3D6EA8',
+w:'#F5F4FA',e:'#A0623A',z:'#24222C',q:'#3B3946',a:'#D9A07A',A:'#A87250',G:'#7A4A28',t:'#5A3218',
+x:'#3B2A20',m:'#C3CCD8',M:'#6E7A8C',c:'#5CF2FF',l:'#2B2F3A',v:'#D4E34A',g:'#3F8A3C',L:'#95C653',f:'#FF8A3D',F:'#FFD43B'};
+function HH(inner){ return '..o' + inner + 'o..'; }
+var CAMI = ['......oooo......','....oobbbboo....','...obbbbbbbbo...',HH('bbbbbbbBbb'),HH('bbbbsssssb'),HH('bbsssssssb'),
+HH('btttsstttb'),HH('btktsstktb'),HH('btttsstttb'),HH('bbssrrssbb'),HH('bbbossobbb'),HH('aaazzzzaaa'),HH('aaazzzzaaa'),HH('AaazzzzaaA'),
+HH('AaazzzzaaA'),HH('saazzzzaas'),'...oaGGFGGGao...','...oazzzzzzao...','....ozzzzzzo....','....ozzzzzzo....',
+'....ozzoozzo....','....ozzoozzo....','....oxxooxxo....','....oooooooo....'];
+var CAMI_BLINK = CAMI.slice(); CAMI_BLINK[7] = CAMI[7].replace(/k/g, 'o');
+var DRAGON = ['..........o...','.........ogo..','....oo..oggoo.','...ogggoggggko','..ogLggggggggo','.oggLLggggfooo',
+'ogggLLLgggo...','.ooggggggo....','...ogo.ogo....','...oo...oo...'];
+var FLAME = ['..F.','fFF.','ffFF','fF..'];
+
+/* ---------- fuente bitmap 5x7 (portada de mockup/font.py, + '*') ---------- */
+var G = {
+'A':[' ### ','#   #','#   #','#####','#   #','#   #','#   #'],
+'B':['#### ','#   #','#   #','#### ','#   #','#   #','#### '],
+'C':[' ####','#    ','#    ','#    ','#    ','#    ',' ####'],
+'D':['#### ','#   #','#   #','#   #','#   #','#   #','#### '],
+'E':['#####','#    ','#    ','#### ','#    ','#    ','#####'],
+'F':['#####','#    ','#    ','#### ','#    ','#    ','#    '],
+'G':[' ####','#    ','#    ','#  ##','#   #','#   #',' ####'],
+'H':['#   #','#   #','#   #','#####','#   #','#   #','#   #'],
+'I':['###',' # ',' # ',' # ',' # ',' # ','###'],
+'J':['  ###','   # ','   # ','   # ','#  # ','#  # ',' ##  '],
+'K':['#   #','#  # ','# #  ','##   ','# #  ','#  # ','#   #'],
+'L':['#    ','#    ','#    ','#    ','#    ','#    ','#####'],
+'M':['#   #','## ##','# # #','# # #','#   #','#   #','#   #'],
+'N':['#   #','##  #','# # #','#  ##','#   #','#   #','#   #'],
+'O':[' ### ','#   #','#   #','#   #','#   #','#   #',' ### '],
+'P':['#### ','#   #','#   #','#### ','#    ','#    ','#    '],
+'Q':[' ### ','#   #','#   #','#   #','# # #','#  # ',' ## #'],
+'R':['#### ','#   #','#   #','#### ','# #  ','#  # ','#   #'],
+'S':[' ####','#    ','#    ',' ### ','    #','    #','#### '],
+'T':['#####','  #  ','  #  ','  #  ','  #  ','  #  ','  #  '],
+'U':['#   #','#   #','#   #','#   #','#   #','#   #',' ### '],
+'V':['#   #','#   #','#   #','#   #','#   #',' # # ','  #  '],
+'W':['#   #','#   #','#   #','# # #','# # #','## ##','#   #'],
+'X':['#   #','#   #',' # # ','  #  ',' # # ','#   #','#   #'],
+'Y':['#   #','#   #',' # # ','  #  ','  #  ','  #  ','  #  '],
+'Z':['#####','    #','   # ','  #  ',' #   ','#    ','#####'],
+'0':[' ### ','#   #','#  ##','# # #','##  #','#   #',' ### '],
+'1':['  #  ',' ##  ','  #  ','  #  ','  #  ','  #  ',' ### '],
+'2':[' ### ','#   #','    #','   # ','  #  ',' #   ','#####'],
+'3':['#### ','    #','    #',' ### ','    #','    #','#### '],
+'4':['#   #','#   #','#   #','#####','    #','    #','    #'],
+'5':['#####','#    ','#### ','    #','    #','#   #',' ### '],
+'6':[' ### ','#    ','#    ','#### ','#   #','#   #',' ### '],
+'7':['#####','    #','   # ','  #  ','  #  ','  #  ','  #  '],
+'8':[' ### ','#   #','#   #',' ### ','#   #','#   #',' ### '],
+'9':[' ### ','#   #','#   #',' ####','    #','    #',' ### '],
+' ':['  ','  ','  ','  ','  ','  ','  '],
+'!':['#','#','#','#','#',' ','#'],
+'¡':['#',' ','#','#','#','#','#'],
+'?':[' ### ','#   #','    #','   # ','  #  ','     ','  #  '],
+'¿':['  #  ','     ','  #  ',' #   ','#    ','#   #',' ### '],
+'.':[' ',' ',' ',' ',' ',' ','#'],
+',':['  ','  ','  ','  ','  ',' #','# '],
+':':[' ','#',' ',' ',' ','#',' '],
+'/':['    #','   # ','   # ','  #  ',' #   ',' #   ','#    '],
+'-':['   ','   ','   ','###','   ','   ','   '],
+'"':['# #','# #','   ','   ','   ','   ','   '],
+'x':['     ','     ','#   #',' # # ','  #  ',' # # ','#   #'],
+'>':['#  ',' # ','  #','  #','  #',' # ','#  '],
+'▼':['     ','#####',' ### ','  #  ','     ','     ','     '],
+'*':['     ','  #  ','# # #',' ### ','# # #','  #  ','     ']
+};
+var ACC = {'Á':'A','É':'E','Í':'I','Ó':'O','Ú':'U'};
+var _gp = {};
+function glyphPixels(s){
+  if (_gp[s]) return _gp[s];
+  var u = s.toUpperCase(), cx = 0, px = [];
+  for (var i = 0; i < u.length; i++){
+    var ch = u[i], acc = null;
+    if (ACC[ch]) { acc = 'a'; ch = ACC[ch]; }
+    if (ch === 'Ñ') { acc = 't'; ch = 'N'; }
+    var g = G[ch] || G['?'], w = g[0].length;
+    for (var gy = 0; gy < g.length; gy++)
+      for (var gx = 0; gx < g[gy].length; gx++)
+        if (g[gy][gx] === '#') px.push([cx + gx, gy]);
+    if (acc === 'a') px.push([cx + Math.floor(w / 2) + 1, -2], [cx + Math.floor(w / 2), -1]);
+    if (acc === 't') px.push([cx + 1, -2], [cx + 2, -2], [cx + 3, -1], [cx + 4, -2]);
+    cx += w + 1;
+  }
+  return (_gp[s] = {px: px, w: cx - 1});
+}
+function tw(s, k){ return glyphPixels(s).w * (k || 1); }
+
+/* ---------- primitivas (todo en enteros) ---------- */
+function R(c, x0, y0, x1, y1, col){ c.fillStyle = col; c.fillRect(x0, y0, x1 - x0, y1 - y0); }
+function P(c, x, y, col){ c.fillStyle = col; c.fillRect(x, y, 1, 1); }
+function disc(c, cx, cy, r, col){
+  c.fillStyle = col;
+  for (var dy = -r; dy <= r; dy++){
+    var dx = Math.floor(Math.sqrt(r * r + r * 0.8 - dy * dy));
+    c.fillRect(cx - dx, cy + dy, 2 * dx + 1, 1);
+  }
+}
+function txt(c, s, x, y, col, k, sh){
+  k = k || 1; x = Math.round(x); y = Math.round(y);
+  var g = glyphPixels(s).px, i;
+  if (sh){
+    var o = k === 1 ? 1 : 2;
+    c.fillStyle = sh;
+    for (i = 0; i < g.length; i++) c.fillRect(x + g[i][0] * k + o, y + g[i][1] * k + o, k, k);
+  }
+  c.fillStyle = col;
+  for (i = 0; i < g.length; i++) c.fillRect(x + g[i][0] * k, y + g[i][1] * k, k, k);
+  return glyphPixels(s).w * k;
+}
+function txtC(c, s, y, col, k, sh){ txt(c, s, Math.round((W - tw(s, k)) / 2), y, col, k, sh); }
+/* sprite con escala por muestreo (para squash y stretch), apoyado en la base */
+function spr(c, S, x, y, k, w, h){
+  k = k || 1;
+  var sw = S[0].length, sh = S.length;
+  w = w || sw * k; h = h || sh * k;
+  for (var dy = 0; dy < h; dy++){
+    var row = S[Math.floor(dy * sh / h)];
+    for (var dx = 0; dx < w; dx++){
+      var ch = row[Math.floor(dx * sw / w)];
+      if (ch !== '.') P(c, x + dx, y + dy, PAL[ch]);
+    }
+  }
+}
+
+/* ---------- fondo: el estudio de mockup/studio.py (sin pregunta ni comodines) ---------- */
+function buildBg(){
+  var cv = document.createElement('canvas'); cv.width = W; cv.height = H;
+  var c = cv.getContext('2d');
+  R(c, 0, 0, W, H, '#1A0F3D');
+  [[60, 0.35], [160, 0], [260, -0.35]].forEach(function(b){
+    var bx = b[0], ang = b[1];
+    for (var y = 0; y < 120; y++){
+      var cxb = bx + ang * (120 - y) * -1, half = 6 + y * 0.18;
+      for (var x = Math.trunc(cxb - half); x < Math.trunc(cxb + half); x++)
+        if (x >= 0 && x < W && (x + y) % 2 === 0) P(c, x, y, '#3A1F7A');
+    }
+  });
+  for (var y2 = 96; y2 < 134; y2++){
+    for (var x2 = 0; x2 < W; x2++){
+      var e = Math.pow((x2 - 160) / 150, 2) + Math.pow((y2 - 118) / 18, 2);
+      if (e < 1) P(c, x2, y2, e > 0.55 ? '#3A1F7A' : ((x2 + y2) % 2 ? '#4B2A94' : '#3A1F7A'));
+      if (e > 0.92 && e < 1) P(c, x2, y2, '#FFD43B');
+    }
+  }
+  R(c, 128, 10, 192, 52, '#C6C5D6'); R(c, 130, 12, 190, 50, '#12111A'); R(c, 132, 14, 188, 48, '#1E4F9A');
+  for (var yy = 14; yy < 48; yy += 2) R(c, 132, yy, 188, yy + 1, '#2A5FB0');
+  R(c, 148, 24, 154, 30, '#A8DBFF'); R(c, 166, 24, 172, 30, '#A8DBFF');
+  R(c, 150, 38, 170, 40, '#A8DBFF'); R(c, 148, 36, 150, 38, '#A8DBFF'); R(c, 170, 36, 172, 38, '#A8DBFF');
+  R(c, 156, 52, 164, 58, '#7C7B91'); R(c, 146, 58, 174, 60, '#7C7B91');
+  txt(c, 'FRAN 2.0', 133, 62, '#FFD43B');
+  R(c, 28, 96, 60, 124, '#E8772E'); R(c, 28, 96, 60, 99, '#FFB765'); R(c, 58, 96, 60, 124, '#A3471B');
+  return cv;
+}
+var BG = buildBg();
+
+/* ---------- confeti: PRNG con semilla fija ---------- */
+function mulberry32(a){
+  return function(){
+    a |= 0; a = a + 0x6D2B79F5 | 0;
+    var t = Math.imul(a ^ a >>> 15, 1 | a);
+    t = t + Math.imul(t ^ t >>> 7, 61 | t) ^ t;
+    return ((t ^ t >>> 14) >>> 0) / 4294967296;
+  };
+}
+var CONF = (function(){
+  var rnd = mulberry32(0xC0FFEE), cols = ['r','F','c','L','f','j','p','v','w'], out = [];
+  for (var i = 0; i < 80; i++){
+    var sz = rnd() < 0.5 ? 1 : 2;
+    out.push({x: rnd() * W, ts: 2.5 + rnd() * 1.0, vy: 90 + rnd() * 70, amp: 2 + rnd() * 4,
+      fr: 3 + rnd() * 3, ph: rnd() * 6.28, w: sz, h: rnd() < 0.5 ? sz : 1, col: PAL[cols[Math.floor(rnd() * cols.length)]],
+      fade: rnd()});
+  }
+  return out;
+})();
+
+/* ---------- constantes de la escena ---------- */
+var PX = 66, PY = 16, PW = 232, PH = 100;
+var FRASE1 = '*15 MINUTOS, EN LA TERRAZA DEL PISO 8,';
+var FRASE2 = 'CON MATE PROPIO.';
+var W1 = tw(FRASE1), TX0 = PX + ((PW - W1) >> 1), LY = PY + 86;
+var LENS_A = TX0 + 10, LENS_B = TX0 + W1 - 10;
+
+function posterY(t){
+  var u = t - 1.0;
+  if (u < 0) return null;
+  if (u < 1.0) return Math.round(-108 + 128 * u * u);
+  if (u < 1.4){ var p = (u - 1.0) / 0.4; return Math.round(20 - 4 * (1 - (1 - p) * (1 - p))); }
+  return PY;
+}
+function drawPoster(c, y){
+  R(c, PX + 4, y + 4, PX + PW + 4, y + PH + 4, '#0A0620');
+  R(c, PX, y, PX + PW, y + PH, '#12111A');
+  R(c, PX + 1, y + 1, PX + PW - 1, y + PH - 1, '#F5F4FA');
+  R(c, PX + 4, y + 4, PX + PW - 4, y + 6, '#C0404A');
+  txt(c, 'VACACIONES', PX + Math.round((PW - tw('VACACIONES', 2)) / 2), y + 14, '#12111A', 2);
+  var gx = PX + Math.round((PW - tw('GRATIS', 3)) / 2);
+  txt(c, 'GRATIS', gx, y + 38, '#C0404A', 3, '#5A0E14');
+  txt(c, '*', gx + tw('GRATIS', 3) + 4, y + 38, '#C0404A', 2);
+  R(c, PX + 16, y + 68, PX + PW - 16, y + 70, '#12111A');
+  /* letra chica: una línea de puntitos, una columna por cada columna con tinta */
+  var g = glyphPixels(FRASE1).px, seen = {}, n = 0;
+  for (var i = 0; i < g.length; i++){
+    var gxp = g[i][0];
+    if (g[i][1] >= 0 && !seen[gxp]){ seen[gxp] = 1; P(c, TX0 + gxp, y + 86, (n++ % 2) ? '#B5B4C4' : '#8F8DA3'); }
+  }
+}
+
+function lensPos(t){
+  var u = t - 6.0, ease = function(p){ return 1 - Math.pow(1 - p, 3); };
+  if (u < 0.3) return {x: 345 + Math.round(2 * ease(u / 0.3)), y: 70, landed: false};
+  if (u < 0.4) return {x: 347, y: 70, landed: false};
+  if (u < 1.2){
+    var e = ease((u - 0.4) / 0.8);
+    return {x: Math.round(347 + (LENS_A - 347) * e), y: Math.round(70 + (LY - 70) * e), landed: false};
+  }
+  if (t < 7.5) return {x: LENS_A, y: LY, landed: true};
+  var p = Math.min(1, (t - 7.5) / 2), s = p * p * (3 - 2 * p);
+  return {x: Math.round(LENS_A + (LENS_B - LENS_A) * s), y: LY, landed: true};
+}
+function drawLens(c, L){
+  var cx = L.x, cy = L.y, i;
+  for (i = 0; i < 12; i++) R(c, cx + 9 + i, cy + 9 + i, cx + 13 + i, cy + 13 + i, '#2B1B2E');
+  for (i = 0; i < 12; i++) R(c, cx + 10 + i, cy + 10 + i, cx + 12 + i, cy + 12 + i, '#A0623A');
+  disc(c, cx, cy, 14, '#2B1B2E');
+  disc(c, cx, cy, 13, '#C99A4A');
+  disc(c, cx, cy, 11, '#EAF6FF');
+  if (L.landed){
+    var g = glyphPixels(FRASE1).px;
+    c.fillStyle = '#12111A';
+    for (i = 0; i < g.length; i++){
+      var X = TX0 + g[i][0], Y = cy - 3 + g[i][1];
+      var dx = X + 0.5 - cx, dy = Y + 0.5 - cy;
+      if (g[i][1] >= 0 && dx * dx + dy * dy <= 100) c.fillRect(X, Y, 1, 1);
+    }
+  }
+  P(c, cx - 7, cy - 6, '#FFFFFF'); P(c, cx - 6, cy - 7, '#FFFFFF'); P(c, cx - 7, cy - 7, '#FFFFFF');
+}
+
+function camiPose(t){
+  var w = 16, h = 24, dy = 0, jumps = [2.6, 3.7];
+  for (var i = 0; i < jumps.length; i++){
+    var u = t - jumps[i];
+    if (u < 0 || u >= 0.8) continue;
+    if (u < 0.15){ w = 18; h = 22; }
+    else if (u < 0.65){ var p = (u - 0.15) / 0.5; dy = -Math.round(64 * p * (1 - p)); w = 14; h = 26; }
+    else { w = 18; h = 22; }
+  }
+  return {w: w, h: h, dy: dy};
+}
+
+function drawGlobo(c, t){
+  var s = '¡FELICITACIONES!', bw = tw(s) + 10, bh = 19, bx = 196;
+  var u = t - 12.5, by = 16 + (u < 0.08 ? 3 : (u < 0.16 ? 1 : 0)), i;
+  var dark = '#12111A', blanco = '#F5F4FA';
+  for (i = 0; i < 5; i++) R(c, bx - 5 + Math.abs(i - 2), by + 7 + i, bx, by + 8 + i, dark);
+  R(c, bx, by, bx + bw, by + bh, dark);
+  R(c, bx + 1, by + 1, bx + bw - 1, by + bh - 1, blanco);
+  for (i = 1; i < 4; i++) R(c, bx - 5 + Math.abs(i - 2) + 1, by + 7 + i, bx + 1, by + 8 + i, blanco);
+  txt(c, s, bx + 5, by + 6, dark);
+}
+
+/* ---------- escena completa en función de t ---------- */
+function renderScene(c, t){
+  var i;
+  if (t < 0) t = 0;
+  c.drawImage(BG, 0, 0);
+
+  /* Cami */
+  var cp = camiPose(t);
+  var blink = (t >= 12.2 && t < 12.3);
+  spr(c, blink ? CAMI_BLINK : CAMI, 44 - (cp.w >> 1), 96 + cp.dy - cp.h, 1, cp.w, cp.h);
+
+  /* dragón y llamita */
+  spr(c, DRAGON, 14, 64, 1);
+  var fl = (Math.floor(t * 5) % 2) ? 0 : -1;
+  if (t >= 5.0 && t < 6.0) fl = 0;
+  if (t < 2.5 || (t >= 5.0 && t < 10.0)) spr(c, FLAME, 28, 69 + fl, 1);
+  else if (t >= 2.5 && t < 5.0){
+    spr(c, FLAME, 28, 66 + fl, 2);
+    var fx = 38 + Math.round(((t - 2.5) * 36) % 30);
+    spr(c, FLAME, fx, 68 - (Math.floor(t * 8) % 2), 1);
+  }
+  for (i = 0; i < 3; i++){
+    var us = t - 10.0 - i * 0.35;
+    if (us > 0 && us < 1.3){
+      var sy = Math.round(68 - us * 14), sx = 30 + i * 2 + Math.round(Math.sin(us * 5 + i) * 2);
+      if (us > 0.9 && (sx + sy) % 2) continue;
+      var rr = us < 0.5 ? 1 : 2;
+      disc(c, sx, sy, rr, '#7C7B91'); if (rr > 1) disc(c, sx, sy, rr - 1, '#C6C5D6');
+    }
+  }
+
+  /* ¡GANASTE! */
+  if (t < 5.0 && Math.floor(t * 4) % 2 === 0) txtC(c, '¡GANASTE!', 3, '#FFD43B', 2, '#12111A');
+
+  /* afiche */
+  var py = (t < 11.5) ? posterY(t) : null;
+  if (py !== null) drawPoster(c, py);
+
+  /* confeti */
+  if (t >= 2.5 && t < 5.0){
+    var fr = t > 4.6 ? (t - 4.6) / 0.4 : 0;
+    for (i = 0; i < CONF.length; i++){
+      var q = CONF[i], u = t - q.ts;
+      if (u < 0 || q.fade < fr) continue;
+      var qy = Math.round(-4 + q.vy * u);
+      if (qy > H) continue;
+      R(c, Math.round(q.x + q.amp * Math.sin(q.fr * u + q.ph)), qy, Math.round(q.x + q.amp * Math.sin(q.fr * u + q.ph)) + q.w, qy + q.h, q.col);
+    }
+  }
+
+  /* lupa */
+  if (t >= 6.0 && t < 9.5) drawLens(c, lensPos(t));
+
+  /* ? sobre Cami */
+  if (t >= 5.15 && t < 6.0){
+    txt(c, '?', 39, 52 - (t < 5.3 ? 2 : 0), '#FFD43B', 2, '#12111A');
+  }
+
+  /* cartel APLAUSOS */
+  if (t >= 2.5 && t < 5.0){
+    var aw = tw('APLAUSOS', 2) + 12, ax = Math.round((W - aw) / 2);
+    R(c, ax, 148, ax + aw, 170, '#F5F4FA'); R(c, ax + 1, 149, ax + aw - 1, 169, '#C0404A');
+    if (Math.floor(t * 4) % 2 === 0) txt(c, 'APLAUSOS', ax + 6, 152, '#F5F4FA', 2);
+  }
+
+  /* remate: caja de diálogo */
+  if (t >= 9.5 && t < 11.5){
+    R(c, 6, 124, 314, 176, '#C6C5D6'); R(c, 7, 125, 313, 175, '#12111A'); R(c, 9, 127, 311, 173, '#3B3A4F'); R(c, 10, 128, 310, 172, '#12111A');
+    var n = Math.floor((t - 9.5) * 45);
+    txt(c, FRASE1.slice(0, n), 16, 136, '#F5F4FA');
+    if (n > FRASE1.length) txt(c, FRASE2.slice(0, n - FRASE1.length), 16, 152, '#F5F4FA');
+    if (t >= 10.8 && Math.floor(t * 3) % 2 === 0) txt(c, '▼', 296, 160, '#FFD43B');
+  }
+
+  /* plano general final */
+  if (t >= 12.5){
+    drawGlobo(c, t);
+    R(c, 0, 152, W, 172, '#12111A'); R(c, 0, 152, W, 153, '#FFD43B');
+    if (Math.floor(t * 2.5) % 2 === 0) txtC(c, 'TOCÁ PARA SEGUIR', 158, '#FFD43B', 2, '#5A3218');
+  }
+}
+
+/* ---------- canvas, bucle y controles ---------- */
+var cv = document.getElementById('lienzo'), ctx = cv.getContext('2d');
+var sc = document.createElement('canvas'); sc.width = W; sc.height = H;
+var sctx = sc.getContext('2d');
+ctx.imageSmoothingEnabled = false; sctx.imageSmoothingEnabled = false;
+
+function draw(t){
+  ctx.imageSmoothingEnabled = false; sctx.imageSmoothingEnabled = false;
+  renderScene(sctx, t);
+  if (t >= 11.5 && t < 12.5) ctx.drawImage(sc, 0, 42, 160, 90, 0, 0, W, H);   /* acercamiento seco x2 */
+  else ctx.drawImage(sc, 0, 0);
+}
+
+var t = 0, playing = true, speed = 1, last = null, dirty = true;
+var bPlay = document.getElementById('bPlay'), bVel = document.getElementById('bVel');
+var barra = document.getElementById('barra'), tiempo = document.getElementById('tiempo');
+var vista = document.getElementById('vista'), vistaImg = document.getElementById('vistaImg');
+
+if (window.matchMedia && window.matchMedia('(prefers-reduced-motion: reduce)').matches){
+  playing = false; t = 2.5;
+}
+function fmt(v){ return Math.min(v, TMAX).toFixed(1).replace('.', ',') + ' s'; }
+function ui(){
+  bPlay.textContent = playing ? 'Pausa' : 'Reproducir';
+  barra.value = Math.min(t, TMAX);
+  tiempo.textContent = fmt(t);
+}
+function frame(ts){
+  if (playing && last !== null) t += Math.min(0.1, (ts - last) / 1000) * speed;
+  last = ts;
+  if (playing || dirty){ draw(t); ui(); dirty = false; }
+  requestAnimationFrame(frame);
+}
+function reiniciar(){ t = 0; playing = true; dirty = true; }
+
+bPlay.addEventListener('click', function(){ playing = !playing; dirty = true; });
+document.getElementById('bReiniciar').addEventListener('click', reiniciar);
+bVel.addEventListener('click', function(){
+  speed = speed === 1 ? 0.5 : 1;
+  bVel.textContent = 'Velocidad ' + (speed === 1 ? '1×' : '0,5×');
+});
+barra.addEventListener('input', function(){ playing = false; t = parseFloat(barra.value) || 0; dirty = true; });
+cv.addEventListener('click', function(){ if (t >= 12.5) reiniciar(); });
+document.addEventListener('keydown', function(e){
+  if (e.key !== 'Enter' && e.key !== ' ' && e.code !== 'Space') return;
+  var a = document.activeElement, tag = a ? a.tagName : '';
+  if (tag === 'BUTTON' || tag === 'INPUT' || tag === 'A') return;
+  if (t >= 12.5){ e.preventDefault(); reiniciar(); }
+});
+
+function mostrarVista(url){
+  vistaImg.src = url; vista.hidden = false;
+  vista.scrollIntoView({block: 'nearest'});
+}
+document.getElementById('bCerrar').addEventListener('click', function(){ vista.hidden = true; });
+document.getElementById('bPng').addEventListener('click', function(){
+  draw(t);
+  var o = document.createElement('canvas'); o.width = 1280; o.height = 720;
+  var oc = o.getContext('2d'); oc.imageSmoothingEnabled = false;
+  oc.drawImage(cv, 0, 0, 1280, 720);
+  var nombre = 'premio-letra-chica-' + t.toFixed(2) + 's.png';
+  o.toBlob(function(b){
+    if (!b) return;
+    var url = URL.createObjectURL(b);
+    var ios = /iPad|iPhone|iPod/.test(navigator.userAgent) || (navigator.platform === 'MacIntel' && navigator.maxTouchPoints > 1);
+    if (ios || !('download' in HTMLAnchorElement.prototype)){ mostrarVista(url); return; }
+    try {
+      var a = document.createElement('a');
+      a.href = url; a.download = nombre; document.body.appendChild(a); a.click(); a.remove();
+      setTimeout(function(){ URL.revokeObjectURL(url); }, 10000);
+    } catch (err) { mostrarVista(url); }
+  }, 'image/png');
+});
+
+ui();
+requestAnimationFrame(frame);
+</script>
+<noscript><p>Esta escena necesita JavaScript.</p></noscript>
+</body>
+</html>

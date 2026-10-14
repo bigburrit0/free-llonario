@@ -1,0 +1,690 @@
+<!DOCTYPE html>
+<html lang="es-UY">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<meta name="color-scheme" content="light dark">
+<title>Propuestas de guion · ¿Quién quiere ser Free-llonario?</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Press+Start+2P&display=swap" rel="stylesheet">
+<style>
+:root{
+  --bg:#f4efe3; --panel:#fffdf6; --ink:#1c1a2e; --mute:#4d4b66; --line:#1c1a2e;
+  --acc:#3a3ab5; --on-acc:#ffffff; --foco:#b3002d; --hl:#b3002d;
+  --a1:#f2994a; --a2:#7fb2f0; --a3:#7fd18b; --gris:#cdc8b8; --on-seg:#1c1a2e;
+  --ok:#14663a; --bar-on:#3a3ab5; --bar-off:#d9d4c3;
+  --pix:"Press Start 2P", ui-monospace, "Courier New", monospace;
+  --txt:system-ui, -apple-system, "Segoe UI", Roboto, sans-serif;
+  --g:16px;
+}
+@media (prefers-color-scheme:dark){
+  :root{
+    --bg:#14121f; --panel:#201d35; --ink:#f1ecdc; --mute:#bdb9d4; --line:#f1ecdc;
+    --acc:#ffd84a; --on-acc:#14121f; --foco:#ffd84a; --hl:#ff7a90;
+    --ok:#7fe0a4; --bar-on:#ffd84a; --bar-off:#4a4666;
+  }
+}
+*{box-sizing:border-box}
+html{-webkit-text-size-adjust:100%}
+body{margin:0;background:var(--bg);color:var(--ink);font:16px/1.5 var(--txt);overflow-x:hidden;-webkit-tap-highlight-color:transparent}
+main{max-width:860px;margin:0 auto;padding:0 var(--g) 48px}
+h1,h2{font-family:var(--pix);font-weight:400;line-height:1.5;margin:0;overflow-wrap:anywhere}
+h1{font-size:15px}
+h2{font-size:12px;margin-bottom:12px}
+h3{font-size:16px;margin:16px 0 6px}
+p{margin:0 0 8px}
+section{margin-top:32px}
+button,input,textarea{font:inherit;color:inherit}
+button{min-height:44px;min-width:44px;padding:8px 12px;background:var(--panel);border:3px solid var(--line);border-radius:0;box-shadow:3px 3px 0 var(--line);cursor:pointer;touch-action:manipulation;text-align:left}
+button:active{transform:translate(2px,2px);box-shadow:1px 1px 0 var(--line)}
+button[aria-pressed="true"],button[aria-selected="true"]{background:var(--acc);color:var(--on-acc)}
+:focus-visible{outline:3px solid var(--foco);outline-offset:2px}
+.caja{background:var(--panel);border:3px solid var(--line);box-shadow:4px 4px 0 var(--line);padding:12px}
+.portada{padding-top:calc(24px + env(safe-area-inset-top))}
+.reco{margin:14px 0}
+.chips{display:flex;flex-wrap:wrap;gap:8px;padding:0;margin:0;list-style:none}
+.chips li{border:3px solid var(--line);background:var(--panel);padding:6px 10px;box-shadow:3px 3px 0 var(--line)}
+.chips b{font-family:var(--pix);font-weight:400;font-size:11px}
+nav.ancla{display:flex;flex-wrap:wrap;gap:8px;margin-top:16px}
+nav.ancla a{display:inline-flex;align-items:center;min-height:44px;padding:0 12px;border:3px solid var(--line);background:var(--panel);color:var(--ink);text-decoration:none;box-shadow:3px 3px 0 var(--line)}
+.tabs{display:flex;flex-wrap:wrap;gap:8px;margin-bottom:14px}
+.tabs button{flex:1 1 70px;text-align:center}
+dl{margin:0}
+dt{font-weight:700;margin-top:10px}
+dd{margin:0;overflow-wrap:anywhere}
+.barra{display:inline-flex;gap:3px;vertical-align:middle;margin-right:8px}
+.barra i{width:18px;height:14px;background:var(--bar-off);border:2px solid var(--line);display:block}
+.barra i.on{background:var(--bar-on)}
+ul.lista{margin:6px 0 0;padding-left:20px}
+ul.lista li{margin-bottom:8px}
+.etq{display:inline-block;font-weight:700;border:2px solid var(--line);padding:0 6px;margin-right:4px;background:var(--panel)}
+.barra-tl{display:flex;gap:10px;align-items:center;flex-wrap:wrap;margin-bottom:12px}
+.tl{display:flex;flex-direction:column;gap:6px}
+.seg{--d:30;position:relative;min-height:max(44px,calc(var(--d) * 1.2px));padding:6px 10px;border:3px solid var(--line);color:var(--on-seg);background:var(--gris);display:flex;flex-direction:column;justify-content:center;gap:2px;font-size:14px;line-height:1.3;overflow-wrap:anywhere}
+button.seg{box-shadow:3px 3px 0 var(--line);background:var(--gris);color:var(--on-seg)}
+button.seg[aria-pressed="true"]{color:var(--on-seg);background:inherit}
+.seg.a1{background:var(--a1)} .seg.a2{background:var(--a2)} .seg.a3{background:var(--a3)}
+button.seg.a1{background:var(--a1)} button.seg.a2{background:var(--a2)} button.seg.a3{background:var(--a3)}
+button.seg[aria-pressed="true"].a1{background:var(--a1)} button.seg[aria-pressed="true"].a2{background:var(--a2)} button.seg[aria-pressed="true"].a3{background:var(--a3)}
+.seg.sel{border-width:5px;font-weight:700}
+.seg.sel b::before{content:"▶ "}
+.seg.hl{outline:4px dashed var(--hl);outline-offset:3px}
+.seg.fus{background-image:repeating-linear-gradient(135deg,rgba(0,0,0,.22) 0 6px,transparent 6px 12px)}
+.seg .tag{font-style:normal;font-size:12px;font-weight:700;background:var(--panel);color:var(--ink);border:2px solid var(--line);padding:0 5px;width:fit-content}
+.seg .nm{overflow-wrap:anywhere}
+.leyenda{display:flex;flex-wrap:wrap;gap:6px 14px;font-size:14px;margin:0 0 12px;padding:0;list-style:none}
+.leyenda i{display:inline-block;width:14px;height:14px;border:2px solid var(--line);vertical-align:-2px;margin-right:4px}
+.vacio{color:var(--mute)}
+#detalle{margin-top:18px;scroll-margin-top:12px}
+ol.ops{list-style:none;padding:0;margin:6px 0}
+ol.ops li{padding:8px 10px;border:2px solid var(--line);margin-bottom:6px;background:var(--bg)}
+ol.ops li.ok{border-width:4px;font-weight:700;color:var(--ok)}
+.rea{display:flex;flex-wrap:wrap;gap:8px;margin:8px 0}
+.rea button{flex:1 1 90px;text-align:center}
+input[type=text]{width:100%;min-height:44px;padding:8px 10px;border:3px solid var(--line);background:var(--bg);border-radius:0;font-size:16px}
+table{width:100%;border-collapse:collapse;table-layout:fixed;font-size:14px}
+th,td{border:2px solid var(--line);padding:4px 6px;vertical-align:top;overflow-wrap:anywhere}
+th{background:var(--panel);text-align:left}
+th:first-child,td:first-child{width:46%}
+td button{width:100%;box-shadow:none;border:0;background:transparent;padding:4px;min-height:44px;font-size:14px}
+tr.act td{background:var(--acc);color:var(--on-acc)}
+tr.act td button{color:var(--on-acc)}
+fieldset{border:3px solid var(--line);background:var(--panel);padding:10px 12px 12px;margin:0 0 16px;min-width:0}
+legend{font-weight:700;padding:0 6px;max-width:100%}
+fieldset fieldset{border-width:2px;margin:10px 0 0;background:transparent}
+.opc{display:flex;flex-wrap:wrap;gap:8px;margin-top:6px}
+.opc button{flex:1 1 140px}
+.acc{display:flex;flex-wrap:wrap;gap:10px;margin-top:8px}
+.acc button{flex:1 1 150px;text-align:center}
+.pri{background:var(--acc);color:var(--on-acc)}
+textarea{width:100%;min-height:220px;margin-top:12px;padding:10px;border:3px solid var(--line);background:var(--panel);border-radius:0;font-size:16px}
+#estado{margin-top:10px;font-weight:700}
+.sr{position:absolute;width:1px;height:1px;overflow:hidden;clip:rect(0 0 0 0);white-space:nowrap}
+@media (min-width:640px){
+  h1{font-size:20px} h2{font-size:14px}
+  .tl{flex-direction:row;gap:4px;align-items:stretch}
+  .seg{flex:var(--d) 1 0;min-width:0;min-height:96px;padding:6px 4px;font-size:13px;text-align:center;align-items:center}
+  .seg .nm{display:none}
+  .seg.corto .lbl{display:none}
+  .seg.corto{padding:0;flex-basis:0}
+}
+@media (prefers-reduced-motion:reduce){*{scroll-behavior:auto!important;transition:none!important}}
+</style>
+</head>
+<body>
+<main>
+<header class="portada" id="inicio">
+  <h1>¿Quién quiere ser Free-llonario?</h1>
+  <p class="reco caja" id="reco"></p>
+  <ul class="chips" id="duraciones" aria-label="Duración de cada versión"></ul>
+  <nav class="ancla" aria-label="Secciones">
+    <a href="#comparador">Comparar</a><a href="#linea">Línea de tiempo</a><a href="#noticias">Noticias</a><a href="#decisiones">Decisiones</a><a href="#copiar">Copiar</a>
+  </nav>
+</header>
+
+<section id="comparador" aria-labelledby="h-comp">
+  <h2 id="h-comp">Comparador</h2>
+  <div class="tabs" role="tablist" aria-label="Versión del guion" id="tabs"></div>
+  <div class="caja" id="panelComp" role="tabpanel"></div>
+</section>
+
+<section id="linea" aria-labelledby="h-linea">
+  <h2 id="h-linea">Línea de tiempo</h2>
+  <p>Tocá una escena para ver el detalle y marcar qué te parece. Se muestra la versión que elegiste arriba.</p>
+  <div class="barra-tl">
+    <button type="button" id="btn5" aria-pressed="false" data-act="min5" data-f="min5">Versión 5 min</button>
+    <span id="durTotal" aria-live="polite"></span>
+  </div>
+  <ul class="leyenda" aria-label="Colores">
+    <li><i style="background:var(--a1)"></i>Acto 1</li><li><i style="background:var(--a2)"></i>Acto 2</li><li><i style="background:var(--a3)"></i>Acto 3</li><li><i style="background:var(--gris)"></i>Intro, cambios y final</li>
+  </ul>
+  <div id="info5" class="caja" hidden></div>
+  <div class="tl" id="tl" role="group" aria-label="Tramos del guion"></div>
+  <div class="caja" id="detalle" aria-live="polite"></div>
+</section>
+
+<section id="noticias" aria-labelledby="h-not">
+  <h2 id="h-not">Las 13 noticias</h2>
+  <p>Tocá una noticia y mirá dónde cae en la línea de tiempo.</p>
+  <table>
+    <thead><tr><th scope="col">Noticia</th><th scope="col">A</th><th scope="col">B</th><th scope="col">C</th></tr></thead>
+    <tbody id="tbNot"></tbody>
+  </table>
+</section>
+
+<section id="decisiones" aria-labelledby="h-dec">
+  <h2 id="h-dec">Mis decisiones</h2>
+  <div id="decs"></div>
+</section>
+
+<section id="copiar" aria-labelledby="h-cop">
+  <h2 id="h-cop">Mis respuestas</h2>
+  <p>Copiá tus respuestas y mandalas por mensaje. Se guardan solas en este teléfono.</p>
+  <div class="acc">
+    <button type="button" class="pri" data-act="copiar" data-f="copiar">Copiar mis respuestas</button>
+    <button type="button" data-act="borrar" data-f="borrar">Borrar todo</button>
+  </div>
+  <p id="estado" role="status"></p>
+  <label for="salida" class="sr">Texto de tus respuestas</label>
+  <textarea id="salida" readonly hidden></textarea>
+</section>
+</main>
+
+<script id="datos" type="application/json">
+{
+"reco":"Base: la versión A, con tres préstamos de bajo costo: carteles de estudio de la C, el cambio de sepia a color de la B en la intro, y el zócalo de noticias y el aviso «PAPELÓN OFF» de 05-skits-y-capas.",
+"versiones":[
+{"id":"A","nombre":"La torta al piso 8","linea":"Cami, en su primer día, tiene una misión: llevar la torta de cumpleaños hasta la terraza del piso 8 sin que le pase nada. No lo va a lograr del todo.","duracion":"6:30",
+ "comparacion":{"columna":"Misión: llevar la torta a la terraza sin que le pase nada","humor":"Mezcla equilibrada: físico + gamer + ironía","golpe":"El dragón prende las 12 velitas","texto":"medio","costo":"medio","riesgo":"bajo","sala":"REDOBLE, CONTÁ, SOPLEN","cambio":"Poco: misma estructura","conviene":"Querés seguridad y producir rápido"},
+ "tramos":[
+  {"id":"Intro","nombre":"Intro: Fran, misión, choque de Lu","dur":"0:38","tipo":"intro"},
+  {"id":"E1","nombre":"E1 · El Papelón","dur":"0:38","tipo":"escena"},
+  {"id":"E2","nombre":"E2 · La tarea con barba","dur":"0:40","tipo":"escena"},
+  {"id":"E3","nombre":"E3 · Fran 2.0","dur":"0:36","tipo":"escena"},
+  {"id":"E4","nombre":"E4 · Cami se une","dur":"0:36","tipo":"escena"},
+  {"id":"Ascensor","nombre":"Ascensor (cambio de acto)","dur":"0:08","tipo":"transicion"},
+  {"id":"E5","nombre":"E5 · La mudanza","dur":"0:34","tipo":"escena"},
+  {"id":"E6","nombre":"E6 · Los 25 + el 8½","dur":"0:44","tipo":"escena"},
+  {"id":"Pórtico","nombre":"Pórtico (cambio de acto)","dur":"0:08","tipo":"transicion"},
+  {"id":"E7","nombre":"E7 · La mesa redonda","dur":"0:36","tipo":"escena"},
+  {"id":"E8","nombre":"E8 · Doce velitas","dur":"0:42","tipo":"escena"},
+  {"id":"Final","nombre":"Final y créditos","dur":"0:30","tipo":"final"}],
+ "escenas":[
+  {"id":"E1","piso":1,"acto":1,"titulo":"El Papelón","dur":"0:38","noticias":[1],
+   "gag":"Una hoja se mueve sola en el lobby y se levanta el Papelón («Firme aquí. Y aquí. Y aquí.»). El fuego del dragón no le hace nada (sello «IGNÍFUGO (POR TRIPLICADO)»). Valen sella VALIDADO 1, 2, 4, 16 veces y el Papelón explota en confeti.",
+   "pregunta":"¿Qué automatizó el Equipo de Innovación?",
+   "opciones":["La proactividad de los procesos","Validar proveedores en BPS y DGI","El sorteo de quién lava las tazas","Imprimir todo en 3 copias"],
+   "correcta":"Validar proveedores en BPS y DGI",
+   "remate":"El confeti cae sobre la torta: «TORTA 97 % (DECORADA)». Si eligen D, el Papelón reaparece tres veces más grande y se desarma solo; Fran 1.0: «ERROR 404. IGUAL SUBIMOS.»",
+   "tarjeta":"Automatizamos la validación de documentación de proveedores en BPS y DGI.","personas":["Cami","Lu","Valentino"]},
+  {"id":"E2","piso":2,"acto":1,"titulo":"La tarea con barba","dur":"0:40","noticias":[2,3],
+   "gag":"Cochera a oscuras. El dragón hace de linterna y revela una tarjeta de Asana con una barba hasta el piso, enredada en la barrera. La barba crece un tile por segundo mientras la sala piensa.",
+   "pregunta":"¿Cuánto estuvo abierto el proyecto de cocheras en Asana?",
+   "opciones":["15 minutos","Lo que dura un mate bien cebado","Sigue abierto, no digas nada","Casi un año"],
+   "correcta":"Casi un año",
+   "remate":"Andrea toca «COMPLETAR»: la barba cae como una alfombra, la barrera sube y Lu estaciona perfecto. Al fondo, el cartel «PRÓXIMAMENTE: PUNTA DEL ESTE».",
+   "tarjeta":"Cerramos el proyecto de cocheras tras casi un año e implementamos sus sistemas. Validamos los requerimientos para Punta del Este.","personas":["Cami","Andrea","Lu"]},
+  {"id":"E3","piso":3,"acto":1,"titulo":"Actualizando a Fran 2.0","dur":"0:36","noticias":[4,5],
+   "gag":"Pantalla «ACTUALIZANDO A FRAN 2.0… 99 %» con holds, tres veces. Fran 2.0 saluda distinto según a quién mira, con tres globos de una palabra: «Buenas, gente.» · «01001000.» · «Kiá.» Se enciende el agente comercial.",
+   "pregunta":"¿Qué tiene de nuevo Fran 2.0?",
+   "opciones":["Ahora ceba mate","Contesta todo con «ta»","Se adapta a cada público","Modo oscuro y opiniones de fútbol"],
+   "correcta":"Se adapta a cada público",
+   "remate":"Si aciertan, Fran repite los tres saludos a la vez y se marea un segundo. Si eligen B: «Ta.», beat, «…Igual subimos.»",
+   "tarjeta":"Desarrollamos Fran 2.0, más personalizada, y el agente comercial, que acompaña y agiliza la gestión comercial.","personas":["Cami","Valentino","Nacho"]},
+  {"id":"E4","piso":4,"acto":1,"titulo":"¡Cami se unió al equipo!","dur":"0:36","noticias":[6,7,8],
+   "gag":"Pantalla de grupo estilo RPG con un lugar vacío. Cami entra («¡CAMI SE UNIÓ AL EQUIPO!»), llueven post-its de la nueva metodología y aparece «LAIB SE UNIÓ A LA PARTIDA. JUGADOR 2».",
+   "pregunta":"Completá el equipo: Valen, Lu, Andre y…",
+   "opciones":["Cami","El robot de la cochera","Fran en forma humana","La gaviota de las reuniones"],
+   "correcta":"Cami",
+   "remate":"Pregunta regalo (Fran: «Esta es fácil. Es para la autoestima.»). Si aciertan, llueve confeti; si fallan, Fran: «Bueno. Cami, no lo tomes personal.»",
+   "tarjeta":"Cami se suma al equipo. Con el Estudio de Innovación creamos una nueva metodología y profundizamos el trabajo con Laib, partner tecnológico.","personas":["Cami","Valentino","Lu","Andrea"]},
+  {"id":"E5","piso":5,"acto":2,"titulo":"La mudanza","dur":"0:34","noticias":[9],
+   "gag":"Un camión verde y amarillo baja cajas QI TECH y DANNEMANN. Un operario sella también la torta: «ZONA FRANCA» (TORTA 90 %). Nacho gira la pelota como globo terráqueo y señala Brasil: es una pista.",
+   "pregunta":"¿De dónde vienen QI TECH y DANNEMANN?",
+   "opciones":["Del piso de arriba","De un Excel con 40 pestañas","De Brasil","De Marte, con buena señal"],
+   "correcta":"De Brasil",
+   "remate":"Cami rescata la torta de un tirón. Si eligen B, aparece una planilla de 40 pestañas y Andrea las cierra todas de un toque.",
+   "tarjeta":"Se instalaron QI TECH y DANNEMANN, dos empresas brasileras.","personas":["Cami","Nacho"]},
+  {"id":"E6","piso":6,"acto":2,"titulo":"El tour de los 25 + el 8½","dur":"0:44","noticias":[10,11],
+   "gag":"El agente comercial guía una fila de empresarios. La sala cuenta en voz alta (sin contador en pantalla) y Nacho cuenta a su manera: «Quince… treinta… cuarenta… ¿game?». Todos entran juntos al ascensor y baja medio piso.",
+   "pregunta":"¿Cuántos empresarios de Brasil nos visitaron?",
+   "opciones":["12","25","5","Uno que dio 25 vueltas"],
+   "correcta":"25",
+   "remate":"Remate del 8½: Cami: «¿Medio piso? ¿Entro agachada?». El agente: «Sujeto a propuesta comercial.» Cami entra en cuclillas y la pelota de Nacho queda trabada en la puerta.",
+   "tarjeta":"Nos visitaron 25 empresarios de Brasil, y trabajamos en propuestas para el medio piso del 8.","personas":["Cami","Nacho"]},
+  {"id":"E7","piso":7,"acto":3,"titulo":"La mesa redonda","dur":"0:36","noticias":[12],
+   "gag":"Mesa redonda con 16 representantes y la gaviota con un cartel de nombre en blanco. Cami: «¿Por qué redonda?». Lu: «Así nadie se pelea por la cabecera.» Cami da una vuelta entera en la silla con rueditas.",
+   "pregunta":"¿Cuántas fundaciones reunió el ROUNDTABLE?",
+   "opciones":["160","1.600","16","Una, pero muy redonda"],
+   "correcta":"16",
+   "remate":"La gaviota se lleva una porción de torta (TORTA 75 %). Si eligen 1.600, la mesa se estira y sale de la pantalla por los dos lados.",
+   "tarjeta":"Realizamos el ROUNDTABLE, que reunió a 16 fundaciones.","personas":["Cami","Lu"]},
+  {"id":"E8","piso":8,"acto":3,"titulo":"Doce velitas","dur":"0:42","noticias":[13],
+   "gag":"Terraza, último sol. Clavan 12 velitas en la torta. Cami: «¿Y con qué las prendemos?». Todos giran la cabeza hacia el dragón, que inhala y las prende de una sola llamarada.",
+   "pregunta":"¿Cuántos años cumplió OMBIJAM?",
+   "opciones":["21","120 (se nos fue un cero)","1,2","Doce, como los mates"],
+   "correcta":"Doce, como los mates",
+   "remate":"Cartel «SOPLEN»: la sala sopla y quien maneja apaga las velitas de a una. La correcta suena a chiste y rompe el patrón de las 7 preguntas anteriores.",
+   "tarjeta":"Acompañamos a OMBIJAM en sus 12 años.","personas":["Cami"]}
+ ]},
+{"id":"B","nombre":"El Papelón ataca (cine mudo)","linea":"El Papelón cae en la primera escena, pero un formulario se escapa, persigue a Cami por todo el edificio y va creciendo con lo que encuentra en cada noticia, hasta convertirse en el jefe final de la terraza.","duracion":"6:32",
+ "comparacion":{"columna":"Un formulario escapa y persigue a Cami; crece hasta ser el jefe final","humor":"Físico (persecuciones, caídas, cara impasible)","golpe":"Fran 2.0: el juego pasa del sepia al color","texto":"bajo","costo":"alto","riesgo":"bajo","sala":"Leer los carteles en voz alta, REDOBLE, SOPLEN","cambio":"Mucho: estética nueva","conviene":"Te entusiasma dibujar animación y no hay parlantes"},
+ "tramos":[
+  {"id":"Intro","nombre":"Prólogo · ROLLO 1, choque","dur":"0:34","tipo":"intro"},
+  {"id":"E1","nombre":"E1 · El Papelón","dur":"0:38","tipo":"escena"},
+  {"id":"E2","nombre":"E2 · La cochera","dur":"0:40","tipo":"escena"},
+  {"id":"E3","nombre":"E3 · Fran 2.0, del sepia al color","dur":"0:38","tipo":"escena"},
+  {"id":"E4","nombre":"E4 · El lugar vacío","dur":"0:36","tipo":"escena"},
+  {"id":"Ascensor","nombre":"Intervalo + ROLLO 2","dur":"0:08","tipo":"transicion"},
+  {"id":"E5","nombre":"E5 · Las cajas","dur":"0:36","tipo":"escena"},
+  {"id":"E6","nombre":"E6 · Los 25 + el 8½","dur":"0:46","tipo":"escena"},
+  {"id":"Pórtico","nombre":"ROLLO 3 + caminata al atardecer","dur":"0:08","tipo":"transicion"},
+  {"id":"E7","nombre":"E7 · La mesa redonda","dur":"0:36","tipo":"escena"},
+  {"id":"E8","nombre":"E8 · Papelón Jr. y las velitas","dur":"0:48","tipo":"escena"},
+  {"id":"Final","nombre":"FIN y créditos","dur":"0:24","tipo":"final"}],
+ "escenas":[
+  {"id":"E1","piso":1,"acto":1,"titulo":"El Papelón (sepia)","dur":"0:38","noticias":[1],
+   "gag":"En sepia: el Papelón se levanta y le tira hojas a Cami como naipes. El dragón estornuda sin efecto. Valen sella VALIDADO 1, 2, 4, 16 veces y el Papelón explota en confeti; Cami ni pestañea.",
+   "pregunta":"¿Qué automatizó el Equipo de Innovación?",
+   "opciones":["Las excusas para llegar tarde","Imprimir todo en 3 copias","La sinergia de lo sinérgico","Validar proveedores en BPS y DGI"],
+   "correcta":"Validar proveedores en BPS y DGI",
+   "remate":"Una hoja se escurre por debajo de una puerta y abre los ojos: «PERO UNO ESCAPÓ…». Si fallan: «ERROR 404. IGUAL SUBIMOS.»",
+   "tarjeta":"Automatizamos la validación de documentación de proveedores en BPS y DGI.","personas":["Cami","Valentino"]},
+  {"id":"E2","piso":2,"acto":1,"titulo":"La cochera (sepia)","dur":"0:40","noticias":[2,3],
+   "gag":"Cochera a oscuras; el formulario entra en puntas de pie detrás de Cami. El dragón de linterna revela la tarea con barba. Cami se esconde detrás de la barba como detrás de una cortina y el formulario se enreda.",
+   "pregunta":"¿Cuánto estuvo abierto el proyecto de cocheras en Asana?",
+   "opciones":["Dos sprints y un feriado","Casi un año","Desde que se inventó el auto","15 minutos"],
+   "correcta":"Casi un año",
+   "remate":"Andrea toca «COMPLETAR» y la barba cae sobre el formulario, que sale con barba: «AHORA TENÍA BARBA.» Lu estaciona perfecto junto a una columna con colchón.",
+   "tarjeta":"Cerramos el proyecto de cocheras tras casi un año e implementamos sus sistemas. Validamos los requerimientos para Punta del Este.","personas":["Cami","Andrea","Lu"]},
+  {"id":"E3","piso":3,"acto":1,"titulo":"Fran 2.0: del sepia al color","dur":"0:38","noticias":[4,5],
+   "gag":"Monitor de Fran 1.0 en sepia: «ACTUALIZANDO… 99 %» (×3). Con «100 %» el juego entero explota a color. Fran 2.0 saluda con tres tipografías («BUENAS, GENTE.» · «ESTIMADO PÚBLICO.» · «01001000.»). El formulario toma el folleto del agente y ahora tiene corbata.",
+   "pregunta":"¿Qué tiene de nuevo Fran 2.0?",
+   "opciones":["Se adapta a cada público","Tiene un primo: Fran 3.0","Es más Fran que nunca","Ahora ceba mate"],
+   "correcta":"Se adapta a cada público",
+   "remate":"El cambio de color es la noticia contada sin palabras. Es el gag más fuerte de esta versión y cuesta poco producirlo (cambio de paleta).",
+   "tarjeta":"Desarrollamos Fran 2.0, más personalizada, y el agente comercial, que acompaña y agiliza la gestión comercial.","personas":["Cami","Nacho"]},
+  {"id":"E4","piso":4,"acto":1,"titulo":"El lugar vacío","dur":"0:36","noticias":[6,7,8],
+   "gag":"Pantalla de grupo: Valen, Lu, Andre y un lugar vacío. Carrera de Cami y el formulario: Cami se tira de palomita y llega primera, impasible. El formulario prueba con el lugar de Laib y rebota: «LUGAR OCUPADO: LAIB, JUGADOR 2.»",
+   "pregunta":"Completá el equipo: Valen, Lu, Andre y…",
+   "opciones":["El formulario que escapó","Fran en forma humana","Cami","La gaviota de las reuniones"],
+   "correcta":"Cami",
+   "remate":"Llueven post-its («NUEVA METODOLOGÍA»); el formulario se lleva los que sobran pegados.",
+   "tarjeta":"Cami se suma al equipo. Con el Estudio de Innovación creamos una nueva metodología y profundizamos el trabajo con Laib, partner tecnológico.","personas":["Cami","Valentino","Lu","Andrea"]},
+  {"id":"E5","piso":5,"acto":2,"titulo":"Las cajas","dur":"0:36","noticias":[9],
+   "gag":"Llega el camión con cajas QI TECH y DANNEMANN. Cami se mete en una caja y las cajas se mezclan como en el juego del trilero. El formulario elige la equivocada: la sellan «ZONA FRANCA» y la suben al camión.",
+   "pregunta":"¿De dónde vienen QI TECH y DANNEMANN?",
+   "opciones":["De la otra torre (la redonda)","De Brasil","De Punta del Este, en temporada","De un Excel con 40 pestañas"],
+   "correcta":"De Brasil",
+   "remate":"Cami asoma de su caja, impasible: «¿FIN DEL PROBLEMA?» — «NO.» El formulario vuelve corriendo con el sello pegado. Al fondo, Nacho señala Brasil con la pelota.",
+   "tarjeta":"Se instalaron QI TECH y DANNEMANN, dos empresas brasileras.","personas":["Cami","Nacho"]},
+  {"id":"E6","piso":6,"acto":2,"titulo":"Los 25 + el 8½","dur":"0:46","noticias":[10,11],
+   "gag":"El agente guía una fila de empresarios y Cami se mete en la fila para esconderse. La sala cuenta en voz alta; el formulario los revisa uno por uno y se frena ante el último: «…¿26?»",
+   "pregunta":"¿Cuántos empresarios de Brasil nos visitaron?",
+   "opciones":["25","26","12","Quince-cero (según Nacho)"],
+   "correcta":"25",
+   "remate":"El 26 era Cami. Remate del 8½: Cami queda colgada del display «8½» como Harold Lloyd del reloj; el agente: «—SUJETO A PROPUESTA COMERCIAL.»",
+   "tarjeta":"Nos visitaron 25 empresarios de Brasil, y trabajamos en propuestas para el medio piso del 8.","personas":["Cami"]},
+  {"id":"E7","piso":7,"acto":3,"titulo":"La mesa redonda","dur":"0:36","noticias":[12],
+   "gag":"Persecución en círculo alrededor de la mesa con 16 representantes: Cami, el formulario y la gaviota, cada vuelta más rápido. En la tercera vuelta se invierten.",
+   "pregunta":"¿Cuántas fundaciones reunió el ROUNDTABLE?",
+   "opciones":["16","16, pero en círculo","160","1.600"],
+   "correcta":"16",
+   "remate":"Todos se frenan de golpe y Lu, sin moverse: «—ASÍ NADIE SE PELEA POR LA CABECERA.»",
+   "tarjeta":"Realizamos el ROUNDTABLE, que reunió a 16 fundaciones.","personas":["Cami","Lu"]},
+  {"id":"E8","piso":8,"acto":3,"titulo":"Papelón Jr. y las velitas","dur":"0:48","noticias":[13],
+   "gag":"Terraza al atardecer. El formulario se infla y se convierte en Papelón Jr. (barba, corbata, post-its y sello de zona franca). Valen le tira a Cami el sello VALIDADO y ella lo atrapa sin mirar, impasible.",
+   "pregunta":"¿Cuántos años cumplió OMBIJAM?",
+   "opciones":["1,2","21","12","120 (se nos fue un cero)"],
+   "correcta":"12",
+   "remate":"Papelón Jr. explota en confeti y una chispa del dragón prende las 12 velitas en cadena. Intertítulo «SOPLEN»: la sala sopla y las velitas se apagan de a una.",
+   "tarjeta":"Acompañamos a OMBIJAM en sus 12 años.","personas":["Cami","Valentino"]}
+ ]},
+{"id":"C","nombre":"En vivo desde el piso 8","linea":"Fran 2.0 conduce el programa en vivo, Cami es la concursante en su primer día y el presupuesto de píxeles se va agotando: al final el juego se ve cada vez más pixelado.","duracion":"6:28",
+ "comparacion":{"columna":"Programa de TV en vivo; el presupuesto de píxeles se agota","humor":"Meta (la producción se desarma) + participación","golpe":"El juego se pixela cada vez más","texto":"alto","costo":"bajo","riesgo":"bajo-medio","sala":"Carteles APLAUSOS/RISAS/¡UUUH! + todo lo anterior","cambio":"Medio: misma estructura, otro marco","conviene":"La sala es muy participativa y querés animar poco"},
+ "tramos":[
+  {"id":"Intro","nombre":"Apertura en vivo + VAR del choque","dur":"0:40","tipo":"intro"},
+  {"id":"E1","nombre":"Bloque 1 · El Papelón","dur":"0:36","tipo":"escena"},
+  {"id":"E2","nombre":"Bloque 2 · La barba","dur":"0:38","tipo":"escena"},
+  {"id":"E3","nombre":"Bloque 3 · Fran 2.0","dur":"0:34","tipo":"escena"},
+  {"id":"E4","nombre":"Bloque 4 · El equipo","dur":"0:34","tipo":"escena"},
+  {"id":"Ascensor","nombre":"Tanda publicitaria","dur":"0:12","tipo":"transicion"},
+  {"id":"E5","nombre":"Bloque 5 · La mudanza","dur":"0:34","tipo":"escena"},
+  {"id":"E6","nombre":"Bloque 6 · Los 25 + el 8½","dur":"0:44","tipo":"escena"},
+  {"id":"Pórtico","nombre":"Tanda publicitaria","dur":"0:10","tipo":"transicion"},
+  {"id":"E7","nombre":"Bloque 7 · La mesa redonda","dur":"0:34","tipo":"escena"},
+  {"id":"E8","nombre":"Bloque 8 · Las velitas","dur":"0:40","tipo":"escena"},
+  {"id":"Final","nombre":"Despedida + créditos","dur":"0:32","tipo":"final"}],
+ "escenas":[
+  {"id":"E1","piso":1,"acto":1,"titulo":"Bloque 1 · El Papelón","dur":"0:36","noticias":[1],
+   "gag":"Móvil en el lobby: Cami con micrófono, y detrás se mueve una pila de formularios. La sala lo ve antes que ella (Valen levanta ¡UUUH!). Valen sella VALIDADO 1, 2, 4, 16 veces.",
+   "pregunta":"¿Qué automatizó el Equipo de Innovación?",
+   "opciones":["Validar proveedores en BPS y DGI","Decir «ta» en las reuniones","La proactividad de los procesos","El sorteo de quién lava las tazas"],
+   "correcta":"Validar proveedores en BPS y DGI",
+   "remate":"Confeti y a Cami se le pega una hoja al micrófono: «Devolvemos a estudio.» Andrea: «¡Y cerramos!»",
+   "tarjeta":"Automatizamos la validación de documentación de proveedores en BPS y DGI.","personas":["Cami","Valentino","Andrea"]},
+  {"id":"E2","piso":2,"acto":1,"titulo":"Bloque 2 · La barba","dur":"0:38","noticias":[2,3],
+   "gag":"Móvil en la cochera: Lu como corresponsal junto a la barrera trabada por la barba de la tarea («Acá estamos, con una tarea con mucha antigüedad.»). La barba crece mientras la sala piensa.",
+   "pregunta":"¿Cuánto estuvo abierto el proyecto de cocheras en Asana?",
+   "opciones":["Casi un año","Un año bisiesto y medio","Lo que dura un mate bien cebado","Sigue abierto, no digas nada"],
+   "correcta":"Casi un año",
+   "remate":"Andrea entra, toca «COMPLETAR» y dice «¡Y cerramos!». La barba cae, la barrera sube y Lu estaciona perfecto. Valen levanta APLAUSOS.",
+   "tarjeta":"Cerramos el proyecto de cocheras tras casi un año e implementamos sus sistemas. Validamos los requerimientos para Punta del Este.","personas":["Lu","Andrea","Valentino"]},
+  {"id":"E3","piso":3,"acto":1,"titulo":"Bloque 3 · Fran 2.0","dur":"0:34","noticias":[4,5],
+   "gag":"Fran cuenta un secreto y le aparece encima «ACTUALIZANDO… 99 %» (×3). Fran 1.0, desde su esquina: «Yo también era lindo, eh.» Fran 2.0 saluda a la sala, al robot y a la gaviota; entra el agente comercial.",
+   "pregunta":"¿Qué tiene de nuevo Fran 2.0?",
+   "opciones":["Modo oscuro y opiniones de fútbol","Se adapta a cada público","Sabe dónde está la columna","Tiene un primo: Fran 3.0"],
+   "correcta":"Se adapta a cada público",
+   "remate":"Comodín: Saque de Nacho desde la cámara 2; la pelota entra en el plano y rompe dos opciones.",
+   "tarjeta":"Desarrollamos Fran 2.0, más personalizada, y el agente comercial, que acompaña y agiliza la gestión comercial.","personas":["Nacho"]},
+  {"id":"E4","piso":4,"acto":1,"titulo":"Bloque 4 · El equipo","dur":"0:34","noticias":[6,7,8],
+   "gag":"«PRESENTAMOS AL EQUIPO», estilo reality: Valen, Lu y Andre, y un cuarto recuadro «¿?». Aparece Cami, llueven post-its («NUEVA METODOLOGÍA») y «LAIB SE UNIÓ A LA PARTIDA. JUGADOR 2».",
+   "pregunta":"Completá el equipo: Valen, Lu, Andre y…",
+   "opciones":["Fran en forma humana","El robot de la cochera","La gaviota de las reuniones","Cami"],
+   "correcta":"Cami",
+   "remate":"Antes de la pregunta, Fran: «Esta es fácil. Es para la autoestima.»",
+   "tarjeta":"Cami se suma al equipo. Con el Estudio de Innovación creamos una nueva metodología y profundizamos el trabajo con Laib, partner tecnológico.","personas":["Cami","Valentino","Lu","Andrea"]},
+  {"id":"E5","piso":5,"acto":2,"titulo":"Bloque 5 · La mudanza","dur":"0:34","noticias":[9],
+   "gag":"Móvil: llega el camión con cajas QI TECH y DANNEMANN y los operarios se llevan, sin querer, también el decorado del estudio (el fondo de las torres era de cartón). Nacho señala Brasil con la pelota desde la cámara 2.",
+   "pregunta":"¿De dónde vienen QI TECH y DANNEMANN?",
+   "opciones":["De Marte, con buena señal","Del piso de arriba","De Punta del Este, en temporada","De Brasil"],
+   "correcta":"De Brasil",
+   "remate":"Fran, sin perder la sonrisa: «Eso estaba planeado.» Cartel «Bem-vindos!»",
+   "tarjeta":"Se instalaron QI TECH y DANNEMANN, dos empresas brasileras.","personas":["Nacho"]},
+  {"id":"E6","piso":6,"acto":2,"titulo":"Bloque 6 · Los 25 + el 8½","dur":"0:44","noticias":[10,11],
+   "gag":"Móvil: el agente con banderita guía una fila de empresarios (cartel «¡CONTÁ CON NOSOTROS!»). La sala cuenta en voz alta y Nacho cuenta a su manera. La fila se mete al estudio y sigue de largo; Fran se corre.",
+   "pregunta":"¿Cuántos empresarios de Brasil nos visitaron?",
+   "opciones":["5","Uno que dio 25 vueltas","25","Los que entraron al ascensor"],
+   "correcta":"25",
+   "remate":"Remate del 8½: Cami: «¿Medio piso? ¿Entro agachada?». El agente: «Sujeto a propuesta comercial.» El monitor de Fran también se ve a medias. Valen levanta RISAS.",
+   "tarjeta":"Nos visitaron 25 empresarios de Brasil, y trabajamos en propuestas para el medio piso del 8.","personas":["Cami","Nacho"]},
+  {"id":"E7","piso":7,"acto":3,"titulo":"Bloque 7 · La mesa redonda","dur":"0:34","noticias":[12],
+   "gag":"Móvil desde la Torre 2, que es un cilindro de cartón: se cae para atrás y se va rodando, y nadie lo comenta. Mesa redonda con 16 representantes y la gaviota. Cami: «¿Por qué redonda?»",
+   "pregunta":"¿Cuántas fundaciones reunió el ROUNDTABLE?",
+   "opciones":["1.600","16","Las que entraron en la mesa","160"],
+   "correcta":"16",
+   "remate":"Lu, sin moverse: «Así nadie se pelea por la cabecera.»",
+   "tarjeta":"Realizamos el ROUNDTABLE, que reunió a 16 fundaciones.","personas":["Cami","Lu"]},
+  {"id":"E8","piso":8,"acto":3,"titulo":"Bloque 8 · Las velitas","dur":"0:40","noticias":[13],
+   "gag":"Estudio con luces bajas. Andrea entra con la torta de 12 velitas apagadas: «¿Alguien tiene fuego?». Todos miran al dragón, que las prende de una.",
+   "pregunta":"¿Cuántos años cumplió OMBIJAM?",
+   "opciones":["21","12","120 (se nos fue un cero)","1,2"],
+   "correcta":"12",
+   "remate":"Valen levanta ¡OOOH! Cartel «SOPLEN»; la sala sopla y las velitas se apagan de a una.",
+   "tarjeta":"Acompañamos a OMBIJAM en sus 12 años.","personas":["Andrea","Valentino"]}
+ ]},
+{"id":"M","nombre":"Mezcla recomendada","basadaEn":"A","linea":"La versión A como base, con tres préstamos de bajo costo.","duracion":"6:30",
+ "comparacion":{"columna":"La misión de la torta (de A)","humor":"Mezcla equilibrada: físico + gamer + ironía (de A)","golpe":"Fran 2.0 pasa de sepia a color, el golpe visual más fuerte para la noticia de Fran (préstamo de B); el dragón prende las 12 velitas (A)","texto":"medio","costo":"medio","riesgo":"bajo","sala":"REDOBLE, CONTÁ, SOPLEN (A) + carteles APLAUSOS y ¡UUUH! en dos o tres momentos (C)","cambio":"Poco: misma estructura que el plan (A)","conviene":"Es la que menos cambia lo ya decidido, reparte mejor el humor entre físico, gamer e ironía y mejor cuida los riesgos. Tiene un hilo (la torta) que la sala entiende en un segundo."},
+ "prestamos":[
+  {"de":"C","que":"Carteles de estudio para la sala (APLAUSOS, ¡UUUH!)","donde":"En dos o tres momentos, no en todos (la propuesta no dice cuáles)","escenas":[]},
+  {"de":"B","que":"Cambio de sepia a color: Fran 1.0 en sepia y, cuando aparece Fran 2.0, el juego se pone en colores","donde":"En la intro","escenas":["Intro"]},
+  {"de":"05","que":"Zócalo de noticias (ÚLTIMO MOMENTO)","donde":"Durante las caminatas","escenas":["Ascensor","Pórtico"]},
+  {"de":"05","que":"Un solo aviso falso: «PAPELÓN OFF»","donde":"En el cambio de acto 1 a 2, si el reloj lo permite","escenas":["Ascensor"]}
+ ]}
+],
+"noticias":[
+{"n":1,"texto":"Validación de proveedores en BPS/DGI","A":"E1","B":"E1","C":"Bloque 1"},
+{"n":2,"texto":"Cierre de cocheras en Asana + implementación","A":"E2","B":"E2","C":"Bloque 2"},
+{"n":3,"texto":"Requerimientos de cocheras en Punta del Este","A":"E2 + créditos","B":"E2","C":"Bloque 2"},
+{"n":4,"texto":"Fran 2.0","A":"E3","B":"E3","C":"Bloque 3"},
+{"n":5,"texto":"Agente comercial","A":"E3 en adelante","B":"E3 en adelante","C":"Bloque 3 en adelante"},
+{"n":6,"texto":"Equipo + Cami","A":"E4","B":"E4","C":"Bloque 4"},
+{"n":7,"texto":"Metodología con el Estudio de Innovación","A":"E4","B":"E4","C":"Bloque 4"},
+{"n":8,"texto":"Laib como partner","A":"E4","B":"E4","C":"Bloque 4"},
+{"n":9,"texto":"QI TECH y DANNEMANN","A":"E5","B":"E5","C":"Bloque 5"},
+{"n":10,"texto":"25 empresarios de Brasil","A":"E6","B":"E6","C":"Bloque 6"},
+{"n":11,"texto":"Medio piso del 8","A":"E6 (8½)","B":"E6 (8½)","C":"Bloque 6 + tanda"},
+{"n":12,"texto":"ROUNDTABLE con 16 fundaciones","A":"E7","B":"E7","C":"Bloque 7"},
+{"n":13,"texto":"OMBIJAM, 12 años","A":"E8","B":"E8","C":"Bloque 8"}
+],
+"recorte5min":{"resumen":"6 preguntas en lugar de 8 y unos 5:10 de reloj. La escalera queda de 6 pisos y el «8½» pasa a ser «6½» (o el display salta del 6 al 8½: un chiste más).","duracion":"5:10","fusiones":[["E1","E2"],["E5","E6"]],
+ "cambios":["Fusionar las escenas 1 y 2 (Papelón + cochera) en una sola pregunta. Ahorra ~35 s.","Fusionar las escenas 5 y 6 (mudanza + tour) en una sola pregunta. Ahorra ~35 s.","Tarjetas de 3 s, con la lista completa de las 13 noticias en los créditos. Ahorra ~15 s.","Sacar una transición de ascensor (la propuesta no dice cuál). Ahorra ~8 s."]},
+"decisiones":[
+{"id":"version","pregunta":"Versión: ¿A, B, C o la mezcla recomendada?","opciones":["A","B","C","Mezcla"],"multiple":false},
+{"id":"duracion","pregunta":"Duración: ¿5 minutos (descripción del proyecto) o hasta 7 (plan)?","opciones":["5 minutos (se aplica la receta de 6 preguntas)","Hasta 7 minutos"],"multiple":false},
+{"id":"capsulas","pregunta":"Cápsulas de respuesta: ¿aprobás ensanchar a dos líneas?","opciones":["Sí, ensanchar a dos líneas","No: las opciones tienen que ser de 15 letras o menos"],"multiple":false},
+{"id":"parlantes","pregunta":"Parlantes: ¿habrá sonido en la sala?","opciones":["Sí, hay sonido (entran la murga y el piano de cine mudo)","No hay sonido"],"multiple":false},
+{"id":"personas","pregunta":"Personas (fichas de OK)","sub":[
+  {"id":"valentino","pregunta":"Valentino: ¿robot o piloto del robot?","opciones":["Robot (VAL-01 a 07)","Piloto del robot (VAL-08)"],"multiple":false},
+  {"id":"andrea","pregunta":"Andrea: ¿cuál es su gag?","opciones":["La que cierra","La barbera","La del termo","La que ordena (Tetris)"],"multiple":false},
+  {"id":"nacho_equipo","pregunta":"Nacho: ¿es del equipo? (cambia la pregunta 4)","opciones":["Sí","No"],"multiple":false},
+  {"id":"nacho_saque","pregunta":"Nacho: ¿le va el saque 50:50?","opciones":["Sí","No"],"multiple":false},
+  {"id":"lu","pregunta":"Lu: ¿OK con…?","opciones":["El choque","La columna como blanco","El VAR"],"multiple":true},
+  {"id":"cami","pregunta":"Cami: ¿OK con…?","opciones":["La misión de la torta (A)","La cara impasible (B)"],"multiple":true}]},
+{"id":"fran","pregunta":"Fran: ¿qué es hoy? Los chistes de Fran 1.0 y 2.0 asumen que es un asistente o una IA del equipo.","opciones":["Un asistente","Una IA del equipo","Otra cosa"],"multiple":false}
+]
+}
+</script>
+
+<script>
+(function(){
+"use strict";
+var D=JSON.parse(document.getElementById("datos").textContent);
+var KEY="freellonario-propuestas-v1";
+var S={ver:"A",sel:null,min5:false,hl:null,dec:{},rea:{}};
+
+function load(){
+  try{var r=localStorage.getItem(KEY);
+    if(r){var o=JSON.parse(r);if(o&&typeof o==="object"){S.dec=o.dec||{};S.rea=o.rea||{};}}}
+  catch(e){}
+}
+function save(){
+  try{localStorage.setItem(KEY,JSON.stringify({dec:S.dec,rea:S.rea}));}
+  catch(e){}
+}
+
+function $(s){return document.querySelector(s);}
+function esc(s){return String(s==null||s===""?"sin dato":s).replace(/[&<>"]/g,function(c){return {"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;"}[c];});}
+function ver(id){return D.versiones.filter(function(v){return v.id===id;})[0];}
+function base(v){return v.basadaEn?ver(v.basadaEn):v;}
+function secs(t){var p=String(t).split(":");return (+p[0])*60+(+p[1]||0);}
+function fmt(n){var m=Math.floor(n/60),s=n%60;return m+":"+(s<10?"0":"")+s;}
+function keep(fn){
+  var a=document.activeElement,id=a&&a.getAttribute&&a.getAttribute("data-f");
+  fn();
+  if(id){var e=document.querySelector('[data-f="'+id+'"]');if(e){try{e.focus({preventScroll:true});}catch(x){e.focus();}}}
+}
+function irA(el){
+  var red=window.matchMedia&&window.matchMedia("(prefers-reduced-motion: reduce)").matches;
+  try{el.scrollIntoView({behavior:red?"auto":"smooth",block:"start"});}catch(e){el.scrollIntoView();}
+}
+
+/* ---------- Portada ---------- */
+function renderPortada(){
+  $("#reco").innerHTML="<b>Recomendación:</b> "+esc(D.reco);
+  $("#duraciones").innerHTML=D.versiones.filter(function(v){return v.id!=="M";}).map(function(v){
+    return "<li><b>"+esc(v.id)+"</b> "+esc(v.duracion)+"</li>";}).join("");
+}
+
+/* ---------- Comparador ---------- */
+var CAMPOS=[["columna","Columna vertebral"],["humor","Humor dominante"],["golpe","Gran golpe visual"],["texto","Texto en pantalla",1],["costo","Costo de animación",1],["riesgo","Riesgo de que un chiste caiga mal",1],["sala","Participación de la sala"],["cambio","Cambio frente al plan"],["conviene","Funciona mejor si…"]];
+var NIVEL={"bajo":1,"bajo-medio":2,"medio":2,"alto":3};
+function barra(val){
+  var k=String(val||"").toLowerCase().replace(/–/g,"-"),n=NIVEL[k];
+  if(!n)return esc(val);
+  var h="";for(var i=1;i<=3;i++)h+='<i class="'+(i<=n?"on":"")+'"></i>';
+  return '<span class="barra" role="img" aria-label="'+esc(val)+'">'+h+"</span>"+esc(val);
+}
+function renderComp(){
+  $("#tabs").innerHTML=D.versiones.map(function(v){
+    var on=v.id===S.ver;
+    return '<button type="button" role="tab" id="tab-'+v.id+'" aria-selected="'+on+'" aria-controls="panelComp" tabindex="'+(on?0:-1)+'" data-act="ver" data-v="'+v.id+'" data-f="tab'+v.id+'">'+(v.id==="M"?"Mezcla":"Versión "+v.id)+"</button>";
+  }).join("");
+  var v=ver(S.ver),c=v.comparacion;
+  $("#panelComp").setAttribute("aria-labelledby","tab-"+v.id);
+  var h="<h3 style=\"margin-top:0\">"+esc(v.nombre)+" · "+esc(v.duracion)+"</h3><p>"+esc(v.linea)+"</p><dl>";
+  CAMPOS.forEach(function(f){h+="<dt>"+f[1]+"</dt><dd>"+(f[2]?barra(c[f[0]]):esc(c[f[0]]))+"</dd>";});
+  h+="</dl>";
+  if(v.prestamos){
+    h+="<h3>Qué se toma de otras versiones</h3><ul class=\"lista\">"+v.prestamos.map(function(p){
+      return "<li><span class=\"etq\">De "+esc(p.de)+"</span> "+esc(p.que)+". <i>"+esc(p.donde)+".</i></li>";}).join("")+"</ul>";
+  }
+  $("#panelComp").innerHTML=h;
+}
+
+/* ---------- Línea de tiempo ---------- */
+function fusionDe(id){
+  var f=D.recorte5min.fusiones;
+  for(var i=0;i<f.length;i++){if(f[i].indexOf(id)>=0)return f[i];}
+  return null;
+}
+function escDeNoticia(n){
+  var b=base(ver(S.ver)),t=D.noticias[n-1][b.id],m=/(?:E|Bloque )(\d)/.exec(t||"");
+  return m?"E"+m[1]:null;
+}
+function prestamosDe(v,id){
+  return (v.prestamos||[]).filter(function(p){return p.escenas.indexOf(id)>=0;});
+}
+function renderTL(){
+  var v=ver(S.ver),b=base(v),tot=0,h="";
+  b.tramos.forEach(function(t){
+    var d=secs(t.dur);tot+=d;
+    var esc_=t.tipo==="escena"?b.escenas.filter(function(s){return s.id===t.id;})[0]:null;
+    var cls="seg "+(esc_?"a"+esc_.acto:"gris")+(d<=12?" corto":"");
+    var tags="";
+    if(esc_){
+      if(S.sel===t.id)cls+=" sel";
+      if(S.hl&&escDeNoticia(S.hl)===t.id){cls+=" hl";tags+='<em class="tag">Noticia '+S.hl+"</em>";}
+      var fu=fusionDe(t.id);
+      if(S.min5&&fu){cls+=" fus";tags+='<em class="tag">Se fusiona con '+fu.filter(function(x){return x!==t.id;}).join(", ")+"</em>";}
+    }else if(S.min5&&t.tipo==="transicion"){tags+='<em class="tag">Se saca una de las dos</em>';}
+    if(prestamosDe(v,t.id).length)tags+='<em class="tag">Préstamo</em>';
+    var inner='<b class="lbl">'+esc(esc_?t.id:t.nombre.split(" ")[0])+'</b><span class="nm">'+esc(t.nombre)+'</span><span class="lbl">'+esc(t.dur)+"</span>"+tags;
+    var title=esc(t.nombre+" · "+t.dur);
+    if(esc_){
+      h+='<button type="button" class="'+cls+'" style="--d:'+d+'" title="'+title+'" aria-pressed="'+(S.sel===t.id)+'" aria-label="'+esc(t.nombre+", "+t.dur+(S.sel===t.id?", elegida":""))+'" data-act="esc" data-e="'+t.id+'" data-f="esc'+t.id+'">'+inner+"</button>";
+    }else{
+      h+='<div class="'+cls+'" style="--d:'+d+'" title="'+title+'"><span class="sr">'+title+"</span>"+inner+"</div>";
+    }
+  });
+  $("#tl").innerHTML=h;
+  var m5=S.min5;
+  var btn=$("#btn5");btn.setAttribute("aria-pressed",m5);
+  btn.textContent=(m5?"✔ ":"")+"Versión 5 min";
+  $("#durTotal").textContent=m5?"Duración: ≈ "+D.recorte5min.duracion+" (con el recorte)":"Duración: "+fmt(tot);
+  var i5=$("#info5");i5.hidden=!m5;
+  if(m5){i5.innerHTML="<p>"+esc(D.recorte5min.resumen)+"</p><ul class=\"lista\">"+D.recorte5min.cambios.map(function(c){return "<li>"+esc(c)+"</li>";}).join("")+"</ul><p>Las escenas rayadas se fusionan. Los anchos siguen siendo los de la versión completa.</p>";}
+}
+
+/* ---------- Detalle de escena + reacciones ---------- */
+function renderDetalle(){
+  var v=ver(S.ver),b=base(v),el=$("#detalle");
+  var s=b.escenas.filter(function(x){return x.id===S.sel;})[0];
+  if(!s){el.innerHTML='<p class="vacio" style="margin:0">Tocá una escena de la línea de tiempo para ver su detalle y marcar qué te parece.</p>';return;}
+  var key=v.id+"|"+s.id,r=S.rea[key]||{};
+  var h="<h3 style=\"margin-top:0\">"+esc(s.id)+" · "+esc(s.titulo)+"</h3>";
+  h+="<p><span class=\"etq\">Piso "+s.piso+"</span> <span class=\"etq\">Acto "+s.acto+"</span> <span class=\"etq\">"+esc(s.dur)+"</span></p>";
+  h+="<dl><dt>Noticias</dt><dd>"+s.noticias.map(function(n){return "#"+n+" "+esc(D.noticias[n-1].texto);}).join("; ")+"</dd>";
+  h+="<dt>Personas</dt><dd>"+esc((s.personas||[]).join(", "))+"</dd>";
+  h+="<dt>Gag</dt><dd>"+esc(s.gag)+"</dd>";
+  h+="<dt>Pregunta</dt><dd>"+esc(s.pregunta)+"</dd></dl>";
+  h+='<ol class="ops">'+s.opciones.map(function(o,i){
+    var ok=o===s.correcta;
+    return '<li class="'+(ok?"ok":"")+'">'+String.fromCharCode(65+i)+") "+esc(o)+(ok?" ✓ (correcta)":"")+"</li>";}).join("")+"</ol>";
+  h+="<dl><dt>Remate</dt><dd>"+esc(s.remate)+"</dd><dt>Tarjeta</dt><dd>"+esc(s.tarjeta)+"</dd></dl>";
+  var pr=prestamosDe(v,s.id);
+  if(pr.length)h+="<p><b>Préstamos acá:</b> "+pr.map(function(p){return esc(p.que);}).join("; ")+"</p>";
+  var fu=fusionDe(s.id);
+  if(S.min5&&fu)h+="<p><b>En la versión de 5 min</b> esta escena se fusiona con "+fu.filter(function(x){return x!==s.id;}).join(", ")+" en una sola pregunta.</p>";
+  h+="<h3>Mis reacciones</h3><div class=\"rea\" role=\"group\" aria-label=\"Qué te parece esta escena\">";
+  [["gusta","Me gusta"],["nogusta","No me gusta"],["cambiar","Cambiar"]].forEach(function(x){
+    h+='<button type="button" aria-pressed="'+(r.r===x[0])+'" data-act="rea" data-r="'+x[0]+'" data-f="rea'+x[0]+'">'+(r.r===x[0]?"✔ ":"")+x[1]+"</button>";});
+  h+='</div><label for="nota" style="font-weight:700">Nota corta</label><input type="text" id="nota" maxlength="200" autocomplete="off" value="'+esc(r.n||"").replace(/^sin dato$/,"")+'" data-key="'+esc(key)+'" placeholder="Ej.: cambiar el remate">';
+  el.innerHTML=h;
+}
+
+/* ---------- Noticias ---------- */
+function renderNoticias(){
+  $("#tbNot").innerHTML=D.noticias.map(function(n){
+    var act=S.hl===n.n;
+    return '<tr class="'+(act?"act":"")+'"><td><button type="button" aria-pressed="'+act+'" data-act="not" data-n="'+n.n+'" data-f="not'+n.n+'">'+n.n+". "+esc(n.texto)+"</button></td><td>"+esc(n.A)+"</td><td>"+esc(n.B)+"</td><td>"+esc(n.C)+"</td></tr>";
+  }).join("");
+}
+
+/* ---------- Decisiones ---------- */
+function opciones(path,q){
+  var cur=S.dec[path]||[];
+  return '<div class="opc" role="group" aria-label="'+esc(q.pregunta)+'">'+q.opciones.map(function(o,i){
+    var on=cur.indexOf(o)>=0;
+    return '<button type="button" aria-pressed="'+on+'" data-act="dec" data-p="'+esc(path)+'" data-i="'+i+'" data-f="dec'+esc(path)+i+'">'+(on?"✔ ":"")+esc(o)+"</button>";}).join("")+"</div>";
+}
+function renderDec(){
+  $("#decs").innerHTML=D.decisiones.map(function(d,i){
+    var h='<fieldset><legend>'+(i+1)+". "+esc(d.pregunta)+"</legend>";
+    if(d.sub){h+=d.sub.map(function(s){return '<fieldset><legend>'+esc(s.pregunta)+(s.multiple?" (podés marcar varias)":"")+"</legend>"+opciones(d.id+"."+s.id,s)+"</fieldset>";}).join("");}
+    else h+=opciones(d.id,d);
+    return h+"</fieldset>";
+  }).join("");
+}
+
+/* ---------- Texto para copiar ---------- */
+var REA={gusta:"Me gusta",nogusta:"No me gusta",cambiar:"Cambiar"};
+function armar(){
+  var L=["MIS RESPUESTAS · ¿Quién quiere ser Free-llonario?","","DECISIONES"],hay=false;
+  D.decisiones.forEach(function(d,i){
+    function val(p){return (S.dec[p]||[]).join(", ");}
+    if(d.sub){
+      var ls=[];d.sub.forEach(function(s){var v=val(d.id+"."+s.id);if(v)ls.push("   - "+s.pregunta+" "+v);});
+      if(ls.length){hay=true;L.push((i+1)+". "+d.pregunta);L=L.concat(ls);}
+    }else{var v=val(d.id);if(v){hay=true;L.push((i+1)+". "+d.pregunta+" "+v);}}
+  });
+  if(!hay)L.push("(sin decisiones marcadas)");
+  L.push("","REACCIONES POR ESCENA");var hayR=false;
+  D.versiones.forEach(function(v){
+    var b=base(v),ls=[];
+    b.escenas.forEach(function(s){
+      var r=S.rea[v.id+"|"+s.id];
+      if(r&&(r.r||r.n)){ls.push("- "+s.id+" · "+s.titulo+" (piso "+s.piso+"): "+(r.r?REA[r.r]:"sin reacción")+(r.n?". Nota: "+r.n:""));}
+    });
+    if(ls.length){hayR=true;L.push("","Versión "+v.id+" · "+v.nombre);L=L.concat(ls);}
+  });
+  if(!hayR)L.push("(sin reacciones marcadas)");
+  return L.join("\n");
+}
+function estado(t){$("#estado").textContent=t;}
+function copiar(){
+  var t=armar(),ta=$("#salida");
+  function manual(){
+    ta.hidden=false;ta.value=t;ta.focus();ta.select();
+    try{ta.setSelectionRange(0,t.length);}catch(e){}
+    estado("No pude copiar solo. Tocá el texto de abajo, seleccionalo y copialo a mano.");
+  }
+  try{
+    if(navigator.clipboard&&navigator.clipboard.writeText){
+      navigator.clipboard.writeText(t).then(function(){ta.hidden=true;estado("Copiado. Ya podés pegarlo en un mensaje.");},manual);
+    }else manual();
+  }catch(e){manual();}
+}
+function borrar(){
+  var ok=false;
+  try{ok=window.confirm("¿Seguro que querés borrar todas tus decisiones y reacciones?");}catch(e){ok=false;}
+  if(!ok)return;
+  S.dec={};S.rea={};S.hl=null;S.sel=null;save();
+  $("#salida").hidden=true;renderAll();estado("Listo, borré todo.");
+}
+
+/* ---------- Eventos ---------- */
+document.addEventListener("click",function(ev){
+  var b=ev.target.closest&&ev.target.closest("[data-act]");if(!b)return;
+  var a=b.getAttribute("data-act");
+  if(a==="ver"){S.ver=b.getAttribute("data-v");keep(function(){renderComp();renderTL();renderDetalle();renderNoticias();});}
+  else if(a==="min5"){S.min5=!S.min5;keep(function(){renderTL();renderDetalle();});}
+  else if(a==="esc"){S.sel=b.getAttribute("data-e");keep(function(){renderTL();renderDetalle();});irA($("#detalle"));}
+  else if(a==="not"){var n=+b.getAttribute("data-n");S.hl=S.hl===n?null:n;keep(function(){renderNoticias();renderTL();});if(S.hl)irA($("#linea"));}
+  else if(a==="rea"){
+    var v=ver(S.ver),key=v.id+"|"+S.sel,r=S.rea[key]||(S.rea[key]={}),x=b.getAttribute("data-r");
+    r.r=r.r===x?"":x;save();keep(renderDetalle);
+  }
+  else if(a==="dec"){
+    var p=b.getAttribute("data-p"),i=+b.getAttribute("data-i"),q=buscar(p),o=q.opciones[i],cur=S.dec[p]||[],k=cur.indexOf(o);
+    if(q.multiple){if(k>=0)cur.splice(k,1);else cur.push(o);}else cur=k>=0?[]:[o];
+    S.dec[p]=cur;save();keep(renderDec);
+  }
+  else if(a==="copiar")copiar();
+  else if(a==="borrar")borrar();
+});
+document.addEventListener("input",function(ev){
+  var t=ev.target;
+  if(t.id==="nota"){var key=t.getAttribute("data-key"),r=S.rea[key]||(S.rea[key]={});r.n=t.value;save();}
+});
+document.addEventListener("keydown",function(ev){
+  var t=ev.target;
+  if(t.getAttribute&&t.getAttribute("role")==="tab"&&(ev.key==="ArrowRight"||ev.key==="ArrowLeft")){
+    var ids=D.versiones.map(function(v){return v.id;}),i=ids.indexOf(S.ver);
+    i=(i+(ev.key==="ArrowRight"?1:ids.length-1))%ids.length;S.ver=ids[i];
+    renderComp();renderTL();renderDetalle();renderNoticias();
+    var nt=$("#tab-"+S.ver);if(nt)nt.focus();ev.preventDefault();
+  }
+});
+function buscar(path){
+  var p=path.split("."),d=D.decisiones.filter(function(x){return x.id===p[0];})[0];
+  return p[1]?d.sub.filter(function(s){return s.id===p[1];})[0]:d;
+}
+
+function renderAll(){renderPortada();renderComp();renderTL();renderDetalle();renderNoticias();renderDec();}
+load();renderAll();
+})();
+</script>
+</body>
+</html>
